@@ -72,7 +72,7 @@ const CreateSection = (props) => {
     const formData = {
       section: values.section,
       section_title: values.section_title,
-      status: values.status,
+      // status: values.status,
     }
 
     console.log(formData);
@@ -123,7 +123,7 @@ const CreateSection = (props) => {
                       <p className="help is-danger">{errors.section_title}</p>
                     )}
                   </Grid>
-                  <Grid item xs={12} sm={12} md={12} >
+                  {/* <Grid item xs={12} sm={12} md={12} >
                     <TextField style={{ minWidth: 290 }}
                       id="status"
                       select
@@ -140,7 +140,7 @@ const CreateSection = (props) => {
                     {errors.status && (
                       <p className="help is-danger">{errors.status}</p>
                     )}
-                  </Grid>
+                  </Grid> */}
 
                 </Grid>
                 <CardFooter style={{ float: 'right' }}>

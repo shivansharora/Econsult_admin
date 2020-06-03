@@ -10,6 +10,8 @@ import CardHeader from '../../components/Card/CardHeader';
 import CardIcon from '../../components/Card/CardIcon';
 import CardBody from '../../components/Card/CardBody';
 import CardFooter from '../../components/Card/CardFooter';
+import avatar from "../../assets/img/patient.png";
+import CardAvatar from '../../components/Card/CardAvatar';
 
 import { Link as RouterLink } from 'react-router-dom';
 
@@ -113,6 +115,8 @@ const CreateDoctor = (props) => {
 	const [masterfiles, setMasterFiles] = useState([]);
 	const [aadharCard, setAadharCard] = useState([]);
 	const [penCard, setPenCard] = useState([]);
+	const uploadedImage = React.useRef(null);
+	const imageUploader = React.useRef(null);
 
 	const {
 		values,
@@ -141,6 +145,19 @@ const CreateDoctor = (props) => {
 		//   Router.History.goBack();
 		// props.history.goBack()
 	}
+
+	const handleImageUpload = e => {
+		const [file] = e.target.files;
+		if (file) {
+			const reader = new FileReader();
+			const { current } = uploadedImage;
+			current.file = file;
+			reader.onload = e => {
+				current.src = e.target.result;
+			};
+			reader.readAsDataURL(file);
+		}
+	};
 
 	const TenthCertificate = () => {
 		return (
@@ -241,6 +258,7 @@ const CreateDoctor = (props) => {
 								</CardIcon>
 								<h4 className={classes.cardTitleWhite}>Create Doctor</h4>
 							</CardHeader>
+						
 							<CardBody>
 								<Grid container spacing={2}>
 									<Grid item xs={12} sm={12} md={12} >
@@ -606,6 +624,45 @@ const CreateDoctor = (props) => {
 							</CardBody>
 						</Card>
 					</Grid>
+					<Grid item xs={12} sm={3} md={3}>
+					<Card style={{ marginTop: '45px', boxShadow: 'rgba(0, 0, 0, 0.3) 0px 2px 8px, rgba(0, 0, 0, 0.22) 0px 10px 12px' }} className={classes.card}>
+						<CardAvatar profile>
+						<input
+								type="file"
+								accept="image/*"
+								onChange={handleImageUpload}
+								ref={imageUploader}
+								style={{
+									display: "none"
+								}}
+							/>
+							<div
+								style={{
+									height: "123px",
+									width: "147px",
+								}}
+								onClick={() => imageUploader.current.click()}
+							>
+								<img
+									ref={uploadedImage}
+									src={avatar}
+									alt="Select"
+									style={{
+										width: "89%",
+										height: "100%",
+										position: "acsolute",
+										cursor: 'pointer'
+									}}
+								/>
+							</div>
+						</CardAvatar>
+						<CardBody>
+							<div style={{ marginLeft:72 }}>
+							<label>Upload Image</label>
+							</div>
+						</CardBody>
+					</Card>
+				</Grid>
 				</Grid>
 			</form>
 		</div>

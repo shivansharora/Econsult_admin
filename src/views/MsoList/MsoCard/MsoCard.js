@@ -11,6 +11,7 @@ import Tooltip from '@material-ui/core/Tooltip';
 import Fab from '@material-ui/core/Fab';
 import EditIcon from '@material-ui/icons/Edit';
 import AddCircleIcon from '@material-ui/icons/AddCircle';
+import PersonAddIcon from '@material-ui/icons/PersonAdd';
 
 import {
   Avatar,
@@ -33,8 +34,8 @@ const useStyles = makeStyles(theme => ({
   fab: {
     margin: 2,
     backgroundColor: '#66a668',
-    width: 42,
-    height: 42
+    width: 38,
+    height: 36
   },
   fab1: {
     margin: 2,
@@ -163,7 +164,7 @@ const MsoCard = props => {
 
         </div>
         <div className={classes.actions}>
-          <Typography style={{ fontWeight: 500, marginLeft: 28 }} variant="body2">Action</Typography>
+          <Typography style={{ fontWeight: 500, marginLeft: 68 }} variant="body2">Action</Typography>
           <Link
             color="inherit"
             component={RouterLink}
@@ -181,6 +182,19 @@ const MsoCard = props => {
           <Link
             color="inherit"
             component={RouterLink}
+            to='/create_mso_staff'
+            variant="h6"
+          >
+            <Tooltip title="Add Staff" aria-label="Add Staff">
+              <Fab className={classes.fab}>
+
+                <PersonAddIcon />
+              </Fab>
+            </Tooltip>
+          </Link>
+          <Link
+            color="inherit"
+            component={RouterLink}
             to={`/mso_detail/${mso.id}`}
             variant="h6"
           >
@@ -191,7 +205,7 @@ const MsoCard = props => {
               </Fab>
             </Tooltip>
           </Link>
-          {/* <Link
+          <Link
             color="inherit"
             component={RouterLink}
             to={`/add_mso_role/${mso.id}`}
@@ -203,7 +217,7 @@ const MsoCard = props => {
                 <AddCircleIcon />
               </Fab>
             </Tooltip>
-          </Link> */}
+          </Link>
 
         </div>
       </CardContent>

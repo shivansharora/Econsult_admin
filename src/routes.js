@@ -127,7 +127,12 @@ const routes = [
         component: lazy(() => import('./views/CreateMso/CreateMso'))
       },
       {
-        path: '/add_mso_role',
+        path: '/create_mso_staff',
+        exact: true,
+        component: lazy(() => import('./views/CreateMso/CreateMsoStaff'))
+      },
+      {
+        path: '/add_mso_role/:id',
         exact: true,
         component: lazy(() => import('./views/MsoDetail/AddRole'))
       },
@@ -175,6 +180,11 @@ const routes = [
         path: '/create_promocode',
         exact: true,
         component: lazy(() => import('./views/PromoCode/CreatePromocode'))
+      },
+      {
+        path: '/edit_promocode/:id',
+        exact: true,
+        component: lazy(() => import('./views/PromoCode/EditPromocode'))
       },
       {
         path: '/create_phrase',

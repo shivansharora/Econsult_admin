@@ -87,7 +87,7 @@ const CreateRole = (props) => {
     const formData = {
       role: values.role,
       role_title: values.role_title,
-      status: values.status,
+      // status: values.status,
     }
 
     console.log(formData);
@@ -138,7 +138,7 @@ const CreateRole = (props) => {
                       <p className="help is-danger">{errors.role_title}</p>
                     )}
                   </Grid>
-                  <Grid item xs={12} sm={12} md={12} >
+                  {/* <Grid item xs={12} sm={12} md={12} >
                     <TextField style={{ minWidth: 290 }}
                       id="status"
                       select
@@ -155,7 +155,7 @@ const CreateRole = (props) => {
                     {errors.status && (
                       <p className="help is-danger">{errors.status}</p>
                     )}
-                  </Grid>
+                  </Grid> */}
                   <div className="h-divider">
                     <div className="shadow"></div>
                     <div style={{ fontSize: 18 }}>

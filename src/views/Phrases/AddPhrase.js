@@ -168,10 +168,7 @@ const AddPhrase = (props) => {
                       Complaint() : null}
                   </Grid>
 
-                  <Grid item xs={12} sm={12} md={12} >
-                    {values.pharse_category === 'Complaint Title' ?
-                      AssociatedSymptom() : null}
-                  </Grid>
+                 
 
                   <Grid item xs={12} sm={6} md={6} >
                     <CustomInput
@@ -232,6 +229,10 @@ const AddPhrase = (props) => {
                     {errors.description_hindi && (
                       <p className="help is-danger">{errors.description_hindi}</p>
                     )}
+                  </Grid>
+                  <Grid item xs={12} sm={12} md={12} >
+                    {values.pharse_category === 'Complaint Title' ?
+                      AssociatedSymptom() : null}
                   </Grid>
                 </Grid>
                 <CardFooter style={{ float: 'right' }}>

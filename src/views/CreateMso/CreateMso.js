@@ -21,7 +21,8 @@ import Gender from './gender';
 import MenuItem from '@material-ui/core/MenuItem';
 import PersonAddIcon from '@material-ui/icons/PersonAdd';
 import CustomInput from '../../components/CustomInput/CustomInput';
-
+import avatar from "../../assets/img/patient.png";
+import CardAvatar from '../../components/Card/CardAvatar';
 // import PerfectScrollbar from 'react-perfect-scrollbar';
 
 // import FileCopyIcon from '@material-ui/icons/FileCopy';
@@ -118,7 +119,9 @@ const CreateMso = (props) => {
 	const [aadharCard, setAadharCard] = useState([]);
 	const [driverLicense, setDriverLicense] = useState([]);
 	const [passBook, setPassBook] = useState([]);
-	const [otherDocument, setOtherDocument] = useState([]);
+	// const [otherDocument, setOtherDocument] = useState([]);
+	const uploadedImage = React.useRef(null);
+	const imageUploader = React.useRef(null);
 	
 
 	const {
@@ -129,29 +132,48 @@ const CreateMso = (props) => {
 	} = useForm(create, validate);
 
 	function create() {
-		const formData = {
+		const formData =[ {
+			type:'mso',
 			name: values.name,
 			mobile: values.mobile,
 			email: values.email,
-			dob: values.dob,
-			age: values.age,
-			marital_status: values.marital_status,
+			// dob: values.dob,
+			// age: values.age,
+			// marital_status: values.marital_status,
 			gender: values.gender,
 			address: values.address,
 			city_id: values.city_id,
 			state_id: values.state_id,
 			pincode: values.pincode,
 			store_code: values.store_code,
-			mode: values.mode,
+			mode: 'training',
 			default_language: values.default_language,
 			password: values.password,
 			confirm_password: values.confirm_password,
 			// files:files
-		}
+		},
+	{
+		user_type:'mso_owner',
+		centre_title:values.centre_title,
+		centre_address:values.centre_address
+	}]
 		  console.log(formData);
 		//   Router.History.goBack();
 		// props.history.goBack()
 	}
+
+	const handleImageUpload = e => {
+		const [file] = e.target.files;
+		if (file) {
+			const reader = new FileReader();
+			const { current } = uploadedImage;
+			current.file = file;
+			reader.onload = e => {
+				current.src = e.target.result;
+			};
+			reader.readAsDataURL(file);
+		}
+	};
 
 	const TenthCertificate = () => {
 		return (
@@ -252,17 +274,17 @@ const CreateMso = (props) => {
 		)
 	}
 
-	const OtherDocuments = () => {
-		return (
-			<Upload
-				files={otherDocument}
-				allowMultiple={true}
-				onupdatefiles={setOtherDocument}
-				labelIdle='Please Choose'
-				className={classes.files}
-			/>
-		)
-	}
+	// const OtherDocuments = () => {
+	// 	return (
+	// 		<Upload
+	// 			files={otherDocument}
+	// 			allowMultiple={true}
+	// 			onupdatefiles={setOtherDocument}
+	// 			labelIdle='Please Choose'
+	// 			className={classes.files}
+	// 		/>
+	// 	)
+	// }
 	return (
 		<div className={classes.root}>
 			<Grid container spacing={2}>
@@ -434,6 +456,32 @@ const CreateMso = (props) => {
 											<p className="help is-danger">{errors.gender}</p>
 										)}
 									</Grid>
+									<Grid item xs={12} sm={4} md={4} >
+										<CustomInput
+											required
+											id="centre_title"
+											name="centre_title"
+											label="Centre Title"
+											value={values.centre_title || ''}
+											changed={handleChange}
+										/>
+										{errors.centre_title && (
+											<p className="help is-danger">{errors.centre_title}</p>
+										)}
+									</Grid>
+									<Grid item xs={12} sm={12} md={12} >
+										<CustomInput
+											required
+											id="centre_address"
+											name="centre_address"
+											label="Centre Address"
+											value={values.centre_address || ''}
+											changed={handleChange}
+										/>
+										{errors.centre_address && (
+											<p className="help is-danger">{errors.centre_address}</p>
+										)}
+									</Grid>
 									<Grid item xs={12} sm={6} md={6} >
 										<CustomInput
 											className={`input ${errors.password && 'is-danger'}`}
@@ -545,7 +593,7 @@ const CreateMso = (props) => {
 												name="aadhar_card"
 												onChange={handleChange}
 											/>}
-											label="Aadhar Card"
+											label="Aadhaar Card"
 										/>
 									</Grid>
 									<Grid item xs={12} sm={4} md={4} >
@@ -568,7 +616,7 @@ const CreateMso = (props) => {
 										{values.driver_license === true ?
 											DriverLicense() : null}
 									</Grid>
-									<Grid item xs={12} sm={2} md={2} >
+									<Grid item xs={12} sm={3} md={3} >
 										<FormControlLabel
 											control={<GreenCheckbox
 												checked={values.pass_book || false}
@@ -584,7 +632,7 @@ const CreateMso = (props) => {
 										{values.pass_book === true ?
 											PassBook() : null}
 									</Grid>
-									<Grid item xs={12} sm={2} md={2} >
+									{/* <Grid item xs={12} sm={2} md={2} >
 										<FormControlLabel
 											control={<GreenCheckbox
 												checked={values.other_document || false}
@@ -599,7 +647,7 @@ const CreateMso = (props) => {
 									<Grid item xs={12} sm={4} md={4} >
 										{values.other_document === true ?
 											OtherDocuments() : null}
-									</Grid>
+									</Grid> */}
 
 								</Grid>
 								<CardFooter style={{ float: 'right' }}>
@@ -613,6 +661,45 @@ const CreateMso = (props) => {
 						</CardBody>
 					</Card>
 
+				</Grid>
+				<Grid item xs={12} sm={3} md={3}>
+					<Card style={{ marginTop: '45px', boxShadow: 'rgba(0, 0, 0, 0.3) 0px 2px 8px, rgba(0, 0, 0, 0.22) 0px 10px 12px' }} className={classes.card}>
+						<CardAvatar profile>
+						<input
+								type="file"
+								accept="image/*"
+								onChange={handleImageUpload}
+								ref={imageUploader}
+								style={{
+									display: "none"
+								}}
+							/>
+							<div
+								style={{
+									height: "123px",
+									width: "147px",
+								}}
+								onClick={() => imageUploader.current.click()}
+							>
+								<img
+									ref={uploadedImage}
+									src={avatar}
+									alt="Select"
+									style={{
+										width: "89%",
+										height: "100%",
+										position: "acsolute",
+										cursor: 'pointer'
+									}}
+								/>
+							</div>
+						</CardAvatar>
+						<CardBody>
+							<div style={{ marginLeft:72 }}>
+							<label>Upload Image</label>
+							</div>
+						</CardBody>
+					</Card>
 				</Grid>
 			</Grid>
 		</div>

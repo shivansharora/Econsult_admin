@@ -37,6 +37,17 @@ export default function validate(values) {
   if (!values.gender) {
     errors.gender = 'Gender is required';
   }
+
+   /////////////////////////// centre_title //////////////////////////////////////
+   if (!values.centre_title) {
+    errors.centre_title = 'Centre Title is required';
+  }
+
+   /////////////////////////// centre_address //////////////////////////////////////
+   if (!values.centre_address) {
+    errors.centre_address = 'Centre Address is required';
+  }
+
   /////////////////////////// Address //////////////////////////////////////
   if (!values.address) {
     errors.address = 'Address is required';

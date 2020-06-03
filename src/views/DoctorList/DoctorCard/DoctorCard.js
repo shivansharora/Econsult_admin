@@ -155,7 +155,7 @@ const DoctorCard = props => {
 
         </div>
         <div className={classes.actions}>
-          <Typography style={{ fontWeight: 500,marginLeft:52 }} variant="body2">Action</Typography>
+          <Typography style={{ fontWeight: 500,marginLeft:24 }} variant="body2">Action</Typography>
           <Link
             color="inherit"
             component={RouterLink}
@@ -169,7 +169,7 @@ const DoctorCard = props => {
               </Fab>
             </Tooltip>
           </Link>
-          <Link
+          {/* <Link
             color="inherit"
             component={RouterLink}
             to={`/edit_detail/${doctor.id}`}
@@ -182,7 +182,7 @@ const DoctorCard = props => {
                 />
               </Fab>
             </Tooltip>
-          </Link>
+          </Link> */}
           <Link
             color="inherit"
             component={RouterLink}

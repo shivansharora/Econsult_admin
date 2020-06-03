@@ -11,9 +11,9 @@ export default function validate(values) {
   }
 
   //////////////////////////// status ////////////////////////////////////
-  if (!values.status) {
-    errors.status = 'Status is required';
-  }
+  // if (!values.status) {
+  //   errors.status = 'Status is required';
+  // }
 
 
   return errors;

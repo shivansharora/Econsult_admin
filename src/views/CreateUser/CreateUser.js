@@ -20,7 +20,8 @@ import Gender from './gender';
 import MenuItem from '@material-ui/core/MenuItem';
 import PersonAddIcon from '@material-ui/icons/PersonAdd';
 import CustomInput from '../../components/CustomInput/CustomInput';
-
+import avatar from "../../assets/img/patient.png";
+import CardAvatar from '../../components/Card/CardAvatar';
 
 
 const styles = theme => ({
@@ -52,6 +53,8 @@ const useStyles = makeStyles(styles);
 
 const CreateUser = (props) => {
 	const classes = useStyles();
+	const uploadedImage = React.useRef(null);
+	const imageUploader = React.useRef(null);
 
 	const {
 		values,
@@ -84,6 +87,20 @@ const CreateUser = (props) => {
 	}
 	// console.log(formData);
 	// console.log(values);
+
+	const handleImageUpload = e => {
+		const [file] = e.target.files;
+		if (file) {
+			const reader = new FileReader();
+			const { current } = uploadedImage;
+			current.file = file;
+			reader.onload = e => {
+				current.src = e.target.result;
+			};
+			reader.readAsDataURL(file);
+		}
+	};
+
 	return (
 		<div className={classes.root}>
 			<Grid container spacing={2}>
@@ -147,7 +164,7 @@ const CreateUser = (props) => {
 											<p className="help is-danger">{errors.email}</p>
 										)}
 									</Grid>
-									<Grid item xs={12} sm={3} md={3} >
+									{/* <Grid item xs={12} sm={3} md={3} >
 										<TextField
 											className={`input ${errors.dob && 'is-danger'}`}
 											id="dob"
@@ -199,27 +216,8 @@ const CreateUser = (props) => {
 										{errors.marital_status && (
 											<p className="help is-danger">{errors.marital_status}</p>
 										)}
-									</Grid>
-									<Grid item xs={12} sm={3} md={3}>
-										<TextField className={classes.formControl}
-											id="gender"
-											select
-											label="Gender"
-											name="gender"
-											value={values.gender || ''}
-											onChange={handleChange}
-										>
-											{Gender.map(option => (
-												<MenuItem key={option.value} value={option.value}>
-													{option.label}
-												</MenuItem>
-											))}
-
-										</TextField>
-										{errors.gender && (
-											<p className="help is-danger">{errors.gender}</p>
-										)}
-									</Grid>
+									</Grid> */}
+									
 									<Grid item xs={12} sm={12} md={12} >
 										<CustomInput
 											className={`input ${errors.address && 'is-danger'}`}
@@ -233,25 +231,6 @@ const CreateUser = (props) => {
 										/>
 										{errors.address && (
 											<p className="help is-danger">{errors.address}</p>
-										)}
-									</Grid>
-									<Grid item xs={12} sm={4} md={4} >
-										<TextField style={{ minWidth: 200 }}
-											id="city_id"
-											select
-											name="city_id"
-											label="City"
-											value={values.city_id || ''}
-											onChange={handleChange}
-
-										>
-											<MenuItem value={10}>Basti</MenuItem>
-											<MenuItem value={20}>Barabanki</MenuItem>
-											<MenuItem value={30}>Others</MenuItem>
-											))}
-										</TextField>
-										{errors.city_id && (
-											<p className="help is-danger">{errors.city_id}</p>
 										)}
 									</Grid>
 									<Grid item xs={12} sm={4} md={4} >
@@ -274,6 +253,26 @@ const CreateUser = (props) => {
 										)}
 									</Grid>
 									<Grid item xs={12} sm={4} md={4} >
+										<TextField style={{ minWidth: 200 }}
+											id="city_id"
+											select
+											name="city_id"
+											label="City"
+											value={values.city_id || ''}
+											onChange={handleChange}
+
+										>
+											<MenuItem value={10}>Basti</MenuItem>
+											<MenuItem value={20}>Barabanki</MenuItem>
+											<MenuItem value={30}>Others</MenuItem>
+											))}
+										</TextField>
+										{errors.city_id && (
+											<p className="help is-danger">{errors.city_id}</p>
+										)}
+									</Grid>
+								
+									<Grid item xs={12} sm={4} md={4} >
 										<CustomInput
 											className={`input ${errors.pincode && 'is-danger'}`}
 											required
@@ -287,8 +286,8 @@ const CreateUser = (props) => {
 											<p className="help is-danger">{errors.pincode}</p>
 										)}
 									</Grid>
-									<Grid item xs={12} sm={6} md={6} >
-										<TextField style={{ minWidth: 300 }}
+									<Grid item xs={12} sm={4} md={4} >
+										<TextField style={{ minWidth: 210 }}
 											id="role"
 											select
 											name="role"
@@ -305,12 +304,12 @@ const CreateUser = (props) => {
 											<p className="help is-danger">{errors.role}</p>
 										)}
 									</Grid>
-									<Grid item xs={12} sm={6} md={6} >
+									<Grid item xs={12} sm={4} md={4} >
 										<TextField style={{ minWidth: 204 }}
 											id="default_language"
 											select
 											name="default_language"
-											label="Language Known"
+											label="Default Language"
 											value={values.default_language || ''}
 											onChange={handleChange}
 
@@ -321,6 +320,26 @@ const CreateUser = (props) => {
 										</TextField>
 										{errors.default_language && (
 											<p className="help is-danger">{errors.default_language}</p>
+										)}
+									</Grid>
+									<Grid item xs={12} sm={4} md={4}>
+										<TextField className={classes.formControl}
+											id="gender"
+											select
+											label="Gender"
+											name="gender"
+											value={values.gender || ''}
+											onChange={handleChange}
+										>
+											{Gender.map(option => (
+												<MenuItem key={option.value} value={option.value}>
+													{option.label}
+												</MenuItem>
+											))}
+
+										</TextField>
+										{errors.gender && (
+											<p className="help is-danger">{errors.gender}</p>
 										)}
 									</Grid>
 									<Grid item xs={12} sm={6} md={6} >
@@ -364,6 +383,45 @@ const CreateUser = (props) => {
 						</CardBody>
 					</Card>
 
+				</Grid>
+				<Grid item xs={12} sm={3} md={3}>
+					<Card style={{ marginTop: '45px', boxShadow: 'rgba(0, 0, 0, 0.3) 0px 2px 8px, rgba(0, 0, 0, 0.22) 0px 10px 12px' }} className={classes.card}>
+						<CardAvatar profile>
+						<input
+								type="file"
+								accept="image/*"
+								onChange={handleImageUpload}
+								ref={imageUploader}
+								style={{
+									display: "none"
+								}}
+							/>
+							<div
+								style={{
+									height: "123px",
+									width: "147px",
+								}}
+								onClick={() => imageUploader.current.click()}
+							>
+								<img
+									ref={uploadedImage}
+									src={avatar}
+									alt="Select"
+									style={{
+										width: "89%",
+										height: "100%",
+										position: "acsolute",
+										cursor: 'pointer'
+									}}
+								/>
+							</div>
+						</CardAvatar>
+						<CardBody>
+							<div style={{ marginLeft:72 }}>
+							<label>Upload Image</label>
+							</div>
+						</CardBody>
+					</Card>
 				</Grid>
 			</Grid>
 		</div>

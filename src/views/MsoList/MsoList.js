@@ -94,7 +94,7 @@ const MsoList = () => {
           >
             <PersonAddIcon className={classes.filterIcon} /> Create MSO
         </Button>
-        <Button
+        {/* <Button
             className={classes.filterButton}
             style={{ float: 'right',marginRight:3 }}
             color="primary"
@@ -104,7 +104,7 @@ const MsoList = () => {
             to="/add_mso_role"
           >
             <AddCircleIcon className={classes.filterIcon} /> Add Role
-        </Button>
+        </Button> */}
         </Grid>
         <Grid item xs={12} sm={12} md={12} >
           <div className={classes.results}>

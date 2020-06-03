@@ -48,7 +48,7 @@ const FixedCard = (props) => {
         <Custombuttons
           style={{ marginLeft: 68, fontSize: '14px', marginTop: -15 }}
           component={RouterLink}
-          to="create_promocode"
+          to={`/edit_promocode/${fixedpromo.id}`}
         >Edit</Custombuttons>
       </CardFooter>
     </Card>

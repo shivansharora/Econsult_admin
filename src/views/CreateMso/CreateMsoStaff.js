@@ -10,19 +10,22 @@ import CardHeader from '../../components/Card/CardHeader';
 import CardIcon from '../../components/Card/CardIcon';
 import CardBody from '../../components/Card/CardBody';
 import CardFooter from '../../components/Card/CardFooter';
-import avatar from "../../assets/img/patient.png";
-import CardAvatar from '../../components/Card/CardAvatar';
 
 import { Link as RouterLink } from 'react-router-dom';
 
 import TextField from '@material-ui/core/TextField';
 import useForm from '../../customHooks/useForm';
-import validate from './Validation'
+import validate from './StaffValidation'
 // import maritalStatus from './maritalStatus';
 import Gender from './gender';
 import MenuItem from '@material-ui/core/MenuItem';
 import PersonAddIcon from '@material-ui/icons/PersonAdd';
 import CustomInput from '../../components/CustomInput/CustomInput';
+import avatar from "../../assets/img/patient.png";
+import CardAvatar from '../../components/Card/CardAvatar';
+// import PerfectScrollbar from 'react-perfect-scrollbar';
+
+// import FileCopyIcon from '@material-ui/icons/FileCopy';
 import { green } from '@material-ui/core/colors';
 import {
 
@@ -31,16 +34,6 @@ import {
 	FormControlLabel
 } from '@material-ui/core';
 import Upload from '../../components/Upload/Upload';
-
-const GreenCheckbox = withStyles({
-	root: {
-		color: green[400],
-		'&$checked': {
-			color: green[600],
-		},
-	},
-	checked: {},
-})((props) => <Checkbox color="default" {...props} />);
 
 const styles = theme => ({
 	root: {
@@ -105,18 +98,31 @@ const styles = theme => ({
 	}
 });
 
+const GreenCheckbox = withStyles({
+	root: {
+		color: green[400],
+		'&$checked': {
+			color: green[600],
+		},
+	},
+	checked: {},
+})((props) => <Checkbox color="default" {...props} />);
+
 const useStyles = makeStyles(styles);
 
-const EditDoctor = (props) => {
+const CreateMso = (props) => {
 	const classes = useStyles();
 	const [tenthfiles, setTenthFiles] = useState([]);
 	const [twelfthfiles, setTwelfthFiles] = useState([]);
 	const [graduationfiles, setGraduationFiles] = useState([]);
 	const [masterfiles, setMasterFiles] = useState([]);
 	const [aadharCard, setAadharCard] = useState([]);
-	const [penCard, setPenCard] = useState([]);
+	const [driverLicense, setDriverLicense] = useState([]);
+	const [passBook, setPassBook] = useState([]);
+	// const [otherDocument, setOtherDocument] = useState([]);
 	const uploadedImage = React.useRef(null);
 	const imageUploader = React.useRef(null);
+	
 
 	const {
 		values,
@@ -126,21 +132,29 @@ const EditDoctor = (props) => {
 	} = useForm(create, validate);
 
 	function create() {
-		const formData = {
+		const formData =[ {
+			type:'mso',
 			name: values.name,
 			mobile: values.mobile,
 			email: values.email,
+			// dob: values.dob,
+			// age: values.age,
+			// marital_status: values.marital_status,
 			gender: values.gender,
 			address: values.address,
 			city_id: values.city_id,
 			state_id: values.state_id,
 			pincode: values.pincode,
-			medical_registration_no: values.medical_registration_no,
-			category: values.category,
-			fee: values.fee,
+			store_code: values.store_code,
+			mode: 'training',
 			default_language: values.default_language,
-			
-		}
+			password: values.password,
+			confirm_password: values.confirm_password,
+			// files:files
+		},
+	{
+		user_type:'mso_staff',
+	}]
 		  console.log(formData);
 		//   Router.History.goBack();
 		// props.history.goBack()
@@ -234,32 +248,54 @@ const EditDoctor = (props) => {
 		)
 	}
 
-	const PenCard = () => {
+	const DriverLicense = () => {
 		return (
 			<Upload
-				files={penCard}
+				files={driverLicense}
 				allowMultiple={true}
-				onupdatefiles={setPenCard}
+				onupdatefiles={setDriverLicense}
 				labelIdle='Please Choose'
 				className={classes.files}
 			/>
 		)
 	}
+
+	const PassBook = () => {
+		return (
+			<Upload
+				files={passBook}
+				allowMultiple={true}
+				onupdatefiles={setPassBook}
+				labelIdle='Please Choose'
+				className={classes.files}
+			/>
+		)
+	}
+
+	// const OtherDocuments = () => {
+	// 	return (
+	// 		<Upload
+	// 			files={otherDocument}
+	// 			allowMultiple={true}
+	// 			onupdatefiles={setOtherDocument}
+	// 			labelIdle='Please Choose'
+	// 			className={classes.files}
+	// 		/>
+	// 	)
+	// }
 	return (
 		<div className={classes.root}>
-			<form onSubmit={handleSubmit} noValidate>
-				<Grid container spacing={1}>
-
-					<Grid item xs={12} sm={8} md={8} >
-						<Card style={{ marginTop: '28px' }}>
-							<CardHeader style={{ width: '147px', padding: '14px' }} color="success" >
-								<CardIcon color="success">
-									<PersonAddIcon />
-								</CardIcon>
-								<h4 className={classes.cardTitleWhite}>Edit Doctor</h4>
-							</CardHeader>
-						
-							<CardBody>
+			<Grid container spacing={2}>
+				<Grid item xs={12} sm={8} md={8} >
+					<Card style={{ marginTop: '24px' }}>
+						<CardHeader style={{ width: '173px', padding: '14px' }} color="success" >
+							<CardIcon color="success">
+								<PersonAddIcon />
+							</CardIcon>
+							<h4 className={classes.cardTitleWhite}>Create MSO Staff</h4>
+						</CardHeader>
+						<CardBody>
+						<form onSubmit={handleSubmit} noValidate>
 								<Grid container spacing={2}>
 									<Grid item xs={12} sm={12} md={12} >
 										<CustomInput
@@ -280,8 +316,9 @@ const EditDoctor = (props) => {
 										)}
 
 									</Grid>
-									<Grid item xs={12} sm={4} md={4} >
+									<Grid item xs={12} sm={6} md={6} >
 										<CustomInput
+											className={`input ${errors.mobile && 'is-danger'}`}
 											required
 											id="mobile"
 											name="mobile"
@@ -294,8 +331,9 @@ const EditDoctor = (props) => {
 											<p className="help is-danger">{errors.mobile}</p>
 										)}
 									</Grid>
-									<Grid item xs={12} sm={4} md={4} >
+									<Grid item xs={12} sm={6} md={6} >
 										<CustomInput
+											className={`input ${errors.email && 'is-danger'}`}
 											required
 											id="email"
 											name="email"
@@ -306,27 +344,6 @@ const EditDoctor = (props) => {
 										/>
 										{errors.email && (
 											<p className="help is-danger">{errors.email}</p>
-										)}
-									</Grid>
-
-									<Grid item xs={12} sm={4} md={4}>
-										<TextField style={{ minWidth: 220 }}
-											id="gender"
-											select
-											label="Gender"
-											name="gender"
-											value={values.gender || ''}
-											onChange={handleChange}
-										>
-											{Gender.map(option => (
-												<MenuItem key={option.value} value={option.value}>
-													{option.label}
-												</MenuItem>
-											))}
-
-										</TextField>
-										{errors.gender && (
-											<p className="help is-danger">{errors.gender}</p>
 										)}
 									</Grid>
 									
@@ -343,6 +360,25 @@ const EditDoctor = (props) => {
 										/>
 										{errors.address && (
 											<p className="help is-danger">{errors.address}</p>
+										)}
+									</Grid>
+									<Grid item xs={12} sm={4} md={4} >
+										<TextField style={{ minWidth: 200 }}
+											id="city_id"
+											select
+											name="city_id"
+											label="City"
+											value={values.city_id || ''}
+											onChange={handleChange}
+
+										>
+											<MenuItem value={10}>Basti</MenuItem>
+											<MenuItem value={20}>Barabanki</MenuItem>
+											<MenuItem value={30}>Others</MenuItem>
+
+										</TextField>
+										{errors.city_id && (
+											<p className="help is-danger">{errors.city_id}</p>
 										)}
 									</Grid>
 									<Grid item xs={12} sm={4} md={4} >
@@ -365,27 +401,8 @@ const EditDoctor = (props) => {
 										)}
 									</Grid>
 									<Grid item xs={12} sm={4} md={4} >
-										<TextField style={{ minWidth: 200 }}
-											id="city_id"
-											select
-											name="city_id"
-											label="City"
-											value={values.city_id || ''}
-											onChange={handleChange}
-
-										>
-											<MenuItem value={10}>Basti</MenuItem>
-											<MenuItem value={20}>Barabanki</MenuItem>
-											<MenuItem value={30}>Others</MenuItem>
-
-										</TextField>
-										{errors.city_id && (
-											<p className="help is-danger">{errors.city_id}</p>
-										)}
-									</Grid>
-									
-									<Grid item xs={12} sm={4} md={4} >
 										<CustomInput
+											className={`input ${errors.pincode && 'is-danger'}`}
 											required
 											id="pincode"
 											name="pincode"
@@ -397,85 +414,43 @@ const EditDoctor = (props) => {
 											<p className="help is-danger">{errors.pincode}</p>
 										)}
 									</Grid>
-									<Grid item xs={12} sm={6} md={6} >
-										<CustomInput
-											required
-											id="medical_registration_no "
-											name="medical_registration_no"
-											label="Medical Registration No"
-											value={values.medical_registration_no || ''}
-											changed={handleChange}
-										/>
-										{errors.medical_registration_no && (
-											<p className="help is-danger">{errors.medical_registration_no}</p>
-										)}
-									</Grid>
-									<Grid item xs={12} sm={6} md={6} >
-										<CustomInput
-											required
-											id="experience "
-											name="experience"
-											label="Experience"
-											value={values.experience || ''}
-											changed={handleChange}
-										/>
-										{errors.experience && (
-											<p className="help is-danger">{errors.experience}</p>
-										)}
-									</Grid>
 									<Grid item xs={12} sm={4} md={4} >
-										<TextField style={{ minWidth: 220 }}
-											id="category"
-											select
-											name="category"
-											label="Category"
-											value={values.category || ''}
-											onChange={handleChange}
-
-										>
-											<MenuItem value={10}>Category 1</MenuItem>
-											<MenuItem value={20}>Category 2</MenuItem>
-											<MenuItem value={20}>Category 3</MenuItem>
-											<MenuItem value={20}>Category 4</MenuItem>
-										</TextField>
-										{errors.category && (
-											<p className="help is-danger">{errors.category}</p>
-										)}
-									</Grid>
-									<Grid item xs={12} sm={4} md={4} >
-										<TextField style={{ minWidth: 220 }}
-											id="fee"
-											select
-											name="fee"
-											label="Fee"
-											value={values.fee || ''}
-											onChange={handleChange}
-
-										>
-											<MenuItem value={10}>Rs. 200</MenuItem>
-											<MenuItem value={20}>Rs. 300</MenuItem>
-											<MenuItem value={20}>Rs. 400</MenuItem>
-											<MenuItem value={20}>Rs. 500</MenuItem>
-										</TextField>
-										{errors.fee && (
-											<p className="help is-danger">{errors.fee}</p>
-										)}
-									</Grid>
-                                    <Grid item xs={12} sm={4} md={4}>
-										<TextField style={{ minWidth: 220 }}
+										<TextField style={{ minWidth: 204 }}
 											id="default_language"
 											select
-											label="Default Language"
 											name="default_language"
+											label="Default Language"
 											value={values.default_language || ''}
 											onChange={handleChange}
+
 										>
 											<MenuItem value='hindi'>Hindi</MenuItem>
 											<MenuItem value='english'>English</MenuItem>
-
+											))}
 										</TextField>
 										{errors.default_language && (
 											<p className="help is-danger">{errors.default_language}</p>
+										)}
+									</Grid>
+									
+									<Grid item xs={12} sm={4} md={4}>
+										<TextField className={classes.formControl}
+											id="gender"
+											select
+											label="Gender"
+											name="gender"
+											value={values.gender || ''}
+											onChange={handleChange}
+										>
+											{Gender.map(option => (
+												<MenuItem key={option.value} value={option.value}>
+													{option.label}
+												</MenuItem>
+											))}
+
+										</TextField>
+										{errors.gender && (
+											<p className="help is-danger">{errors.gender}</p>
 										)}
 									</Grid>
 									<Grid item xs={12} sm={6} md={6} >
@@ -506,13 +481,12 @@ const EditDoctor = (props) => {
 											<p className="help is-danger">{errors.confirm_password}</p>
 										)}
 									</Grid>
-
 									<br /><br />
 									<Grid item xs={12} sm={12} md={12} style={{ textAlign: 'center' }}>
 										<label style={{ fontSize: 17, fontWeight: 600 }}>Upload Documents :</label>
 									</Grid>
 									<Grid item xs={12} sm={12} md={12} >
-										<label style={{ fontSize: 15, fontWeight: 600 }}>*Select Certificates to Upload :</label>
+										<label style={{ fontSize: 15, fontWeight: 600 }}>*Select Education Certificates to Upload :</label>
 									</Grid>
 									<Grid item xs={12} sm={2} md={2} >
 										<FormControlLabel
@@ -555,7 +529,7 @@ const EditDoctor = (props) => {
 												name="graduation"
 												onChange={handleChange}
 											/>}
-											label="Graduation Degree"
+											label="Graduation/Diploma"
 										/>
 									</Grid>
 									<Grid item xs={12} sm={4} md={4} >
@@ -590,7 +564,7 @@ const EditDoctor = (props) => {
 												name="aadhar_card"
 												onChange={handleChange}
 											/>}
-											label="Aadhar Card"
+											label="Aadhaar Card"
 										/>
 									</Grid>
 									<Grid item xs={12} sm={4} md={4} >
@@ -600,31 +574,66 @@ const EditDoctor = (props) => {
 									<Grid item xs={12} sm={2} md={2} >
 										<FormControlLabel
 											control={<GreenCheckbox
-												checked={values.pen_card || false}
+												checked={values.driver_license || false}
 												style={{ marginLeft: '-6px' }}
 												color="primary"
-												name="pen_card"
+												name="driver_license"
 												onChange={handleChange}
 											/>}
-											label="Pan Card"
+											label="Driver's License"
 										/>
 									</Grid>
 									<Grid item xs={12} sm={4} md={4} >
-										{values.pen_card === true ?
-											PenCard() : null}
+										{values.driver_license === true ?
+											DriverLicense() : null}
 									</Grid>
+									<Grid item xs={12} sm={3} md={3} >
+										<FormControlLabel
+											control={<GreenCheckbox
+												checked={values.pass_book || false}
+												style={{ marginLeft: '-6px' }}
+												color="primary"
+												name="pass_book"
+												onChange={handleChange}
+											/>}
+											label="Pass Book"
+										/>
+									</Grid>
+									<Grid item xs={12} sm={4} md={4} >
+										{values.pass_book === true ?
+											PassBook() : null}
+									</Grid>
+									{/* <Grid item xs={12} sm={2} md={2} >
+										<FormControlLabel
+											control={<GreenCheckbox
+												checked={values.other_document || false}
+												style={{ marginLeft: '-6px' }}
+												color="primary"
+												name="other_document"
+												onChange={handleChange}
+											/>}
+											label="Other Document"
+										/>
+									</Grid>
+									<Grid item xs={12} sm={4} md={4} >
+										{values.other_document === true ?
+											OtherDocuments() : null}
+									</Grid> */}
+
 								</Grid>
 								<CardFooter style={{ float: 'right' }}>
 									<Button type="submit">Create</Button>
 									<Button
 										component={RouterLink}
-										to="/doctor_list"
+										to="/mso_list"
 									>Cancel</Button>
 								</CardFooter>
-							</CardBody>
-						</Card>
-					</Grid>
-					<Grid item xs={12} sm={3} md={3}>
+							</form>
+						</CardBody>
+					</Card>
+
+				</Grid>
+				<Grid item xs={12} sm={3} md={3}>
 					<Card style={{ marginTop: '45px', boxShadow: 'rgba(0, 0, 0, 0.3) 0px 2px 8px, rgba(0, 0, 0, 0.22) 0px 10px 12px' }} className={classes.card}>
 						<CardAvatar profile>
 						<input
@@ -663,10 +672,9 @@ const EditDoctor = (props) => {
 						</CardBody>
 					</Card>
 				</Grid>
-				</Grid>
-			</form>
+			</Grid>
 		</div>
 	);
 }
 
-export default EditDoctor;
+export default CreateMso;
